@@ -39,6 +39,26 @@ def Checker(A, b, c, epsilon):
     return [m, n]
 
 
+def IsIdentitySolution(A, b):
+    """ Input: A is a list of m (n x n)-dimensional numpy matrices, and b is 
+               an (m x 1)-dimensional numpy matrix.
+        Output: True or False
+        Description: IsIdentitySolution returns True if the (n x n)-dimensional
+                     identity matrix is a solution to <A_i, x> = b_i for each
+                     A_i in A and b_i in b.
+    """
+
+    to_return = True
+    n = A[0].shape[0]
+    I = numpy.identity(n)
+
+    for i in range(0, len(A)):
+        if numpy.trace(A[i] * I) != b[i]:
+            to_return = False
+
+    return to_return
+
+
 def InitialFinder(A, b, c, z):
     """ Input: A is a list of m (n x n)-dimensional numpy matrices, b is
                an (m x 1)-dimensional numpy matrix, c is an
@@ -216,7 +236,8 @@ def RenegarIdentitySDP(A, b, c, eps):
                problem CP, and b is an (m x 1)-dimensional numpy matrix that
                represents the RHS of the affine constraints in CP. eps is a
                number that represents the desired accuracy of the returned
-               solution relative to the actual solution.
+               solution relative to the actual solution. Furthermore, the identity
+               matrix must be a solution to the SDP specified by A, b, and c.
         Output: A list with two elements: the first is an (n x n)-dimensional
                 numpy matrix that's a solution to the original problem CP, and
                 the second is the objective function value of this solution.
@@ -227,6 +248,9 @@ def RenegarIdentitySDP(A, b, c, eps):
 
     # First, check to see that the input given is valid.
     m, n = Checker(A, b, c, eps)
+
+    if not IsIdentitySolution(A, b):
+        raise ValueError("Identity matrix is not a solution for this input.")
 
     # Now, find a starting point for the supgradient algorithm.
     n = c.shape[0]
