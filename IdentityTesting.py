@@ -141,6 +141,33 @@ print "Finished testing Checker"
 
 
 ################################################################################
+########################### Test IsIdentitySolution ############################
+
+# Example where identity matrix is a feasible solution.
+
+A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [2, 6, 0], [8, 0, 4]])]
+b = numpy.matrix([[9], [10]])
+
+if IsIdentitySolution(A, b):
+	print "IsIdentitySolution works for example where identity matrix is a feasible solution."
+else:
+	raise ValueError("IsIdentitySolution doesn't work for example where identity matrix is a feasible solution.")
+
+
+# Example where identity matrix is not a feasible solution.
+
+A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [2, 6, 0], [8, 0, 4]])]
+b = numpy.matrix([[10], [10]])
+
+if not IsIdentitySolution(A, b):
+	print "IsIdentitySolution works for example where identity matrix is not a feasible solution."
+else:
+	raise ValueError("IsIdentitySolution doesn't work for example where identity matrix is not a feasible solution.")
+
+print "Finished testing IsIdentitySolution"
+
+
+################################################################################
 ############################# Test InitialFinder ###############################
 
 print "Testing InitialFinder"
