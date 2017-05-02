@@ -4,22 +4,6 @@ import math
 import IdentityCase
 
 
-
-# Order of things to do:
-# 1) Check that input is in the correct form.
-#    	Use Checker from IdentityCase
-#		Done
-# 2) Find a feasible solution E to the given SDP.
-#		Done
-# 3) Compute Eigendecomposition of E.
-# 4) Compute square root of E.
-# 5) Compute new objective matrix C' from C and new affine matrices A_i' from A_i.
-# 6) Solve modified problem with IdentityCase
-# 7) Convert back to solution of the original problem.
-
-
-
-
 def FindDistinguishedDirection(A, b):
 	""" Input: A must be a list of m (n x n)-dimensional numpy matrices and b
 			   b must be an (m x 1)-dimensional numpy matrix.
@@ -49,13 +33,16 @@ def FindDistinguishedDirection(A, b):
 
 
 def EigenDecomp(E):
-	""" Input: 
+	""" Input: (n x n)-dimensional numpy matrix E.
 		Output: Orthogonal matrix Q of normed eigenvectors and diagonal matrix
 				of corresponding eigenvalues. Both given as (n x n)-dimensional
 				numpy matrices.
-		Description: Self-explanatory. Eigenvalues and eigenvectors are sorted
-					 in increasing order.
+		Description: Self-explanatory.
 	"""
+
+	eig_values, eig_vectors = numpy.linalg.eig(E)
+	eig_values_matrix = numpy.diag(eig_values)
+	return [eig_vectors, eig_values_matrix]
 
 
 def RenegarSDP(A, b, c, eps):
@@ -76,5 +63,17 @@ def RenegarSDP(A, b, c, eps):
 	"""
 
 	m, n = IdentityCase.Checker(A, b, c, eps)
-
 	E = FindDistinguishedDirection(A, b)
+	[Q, eig_D] = EigenDecomp(E)
+	eig_D_root = numpy.sqrt(eig_D)
+	E_root = Q * eig_D_root * Q.T
+
+	new_c = E_root * c * E_root
+	new_A = []
+	for i in range(0, len(A)):
+		new_A.append(E_root * A[i] * E_root)
+
+	opt_mod_sol, opt_mod_sol_val = IdentityCase.RenegarIdentitySDP(A, b, c, eps)
+	opt_sol = E_root * opt_mod_sol * E_root
+
+	return [opt_sol, opt_mod_sol_val]
