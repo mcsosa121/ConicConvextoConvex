@@ -12,6 +12,7 @@ def isclose(a, b, rel_tol, abs_tol):
 def check_symmetric(a, tol = 1e-6):
 	return numpy.allclose(a, a.T, atol = tol)
 
+
 ################################################################################
 ################################ Test Checker ##################################
  
@@ -190,9 +191,9 @@ c = numpy.matrix([[-1, 0], [0, -1]])
 try:
 	x = InitialFinder(A, b, c, -2)
 except:
-	print "Checked that problem must be bouded"
+	print "Checked that problem must be bounded"
 
-# Example where problem has a feasible solution
+# Example where problem has a bounded, feasible solution
 A = [numpy.matrix([[1, 0], [0, -1]])]
 b = numpy.matrix([[0]])
 c = numpy.matrix([[1, 0], [0, 1]])
@@ -208,11 +209,6 @@ else:
 	raise ValueError("x isn't actually a solution to the desired problem.")
 
 print "Finished testing InitialFinder"
-
-
-
-if isclose(numpy.trace(A[0].T * x), b.item(0, 0), 1e-6, 0.01) and numpy.trace(c.T * x) <= numpy.trace(c.T * numpy.identity(c.shape[0])):
-	print "Checked that InitialFinder works for correct input"
 
 
 ################################################################################
