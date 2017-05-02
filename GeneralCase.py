@@ -4,6 +4,14 @@ import math
 import IdentityCase
 
 
+def IsPositiveSemidefinite(A):
+	""" Input: A must be a numpy matrix.
+		Output: True if A is positive semidefinite, False otherwise.
+		Description: Checks to see if A is a positive semidefinite matrix
+					 by seeing if it's a symmetric matrix with positive
+					 eigenvalues.
+	"""
+
 def FindDistinguishedDirection(A, b):
 	""" Input: A must be a list of m (n x n)-dimensional numpy matrices and b
 			   b must be an (m x 1)-dimensional numpy matrix.
@@ -19,21 +27,21 @@ def FindDistinguishedDirection(A, b):
 	constraints = [x >> 0, x.T == x]
 	for i in range(0, len(A)):
 		constraints += [cvxpy.trace(A[i].T * x) == b[i]]
-	objective = 0
+	objective = cvxpy.Minimize(0)
 	prob = cvxpy.Problem(objective, constraints)
 	result = prob.solve()
 
 	if (prob.status == 'infeasible'):
-        raise ValueError('Problem Is Infeasible')
-    
-    if (prob.status == 'unbounded'):
-        raise ValueError('Problem Is Unbounded')
+		raise ValueError('Problem Is Infeasible')
 
-    return x.value
+	if (prob.status == 'unbounded'):
+		raise ValueError('Problem Is Unbounded')
+
+	return x.value
 
 
 def EigenDecomp(E):
-	""" Input: (n x n)-dimensional numpy matrix E.
+	""" Input: (n x n)-dimensional numpy matrix E. E must be positive semidefinite.
 		Output: Orthogonal matrix Q of normed eigenvectors and diagonal matrix
 				of corresponding eigenvalues. Both given as (n x n)-dimensional
 				numpy matrices.
