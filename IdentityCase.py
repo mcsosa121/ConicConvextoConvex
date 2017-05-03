@@ -2,6 +2,12 @@ import cvxpy
 import numpy
 import math
 
+# isclose is used to check if two floating point numbers are close
+# enough to be considered equal.
+def isclose(a, b, rel_tol, abs_tol):
+    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
+
 def Checker(A, b, c, epsilon):
     """ Checks to see if the user-defined input is of the correct form.
         We require that A be a list of m (nxn)-dimensional numpy matrices
@@ -53,7 +59,7 @@ def IsIdentitySolution(A, b):
     I = numpy.identity(n)
 
     for i in range(0, len(A)):
-        if numpy.trace(A[i] * I) != b[i]:
+        if not isclose(numpy.trace(A[i].T * I), b[i], 1e-4, .01):
             to_return = False
 
     return to_return
@@ -82,9 +88,6 @@ def InitialFinder(A, b, c, z):
     
     if (prob.status == 'infeasible'):
         raise ValueError('Problem Is Infeasible')
-    
-    if (prob.status == 'unbounded'):
-        raise ValueError('Problem Is Unbounded')
 
     return x.value
 
