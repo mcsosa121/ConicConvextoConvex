@@ -4,14 +4,6 @@ import math
 import IdentityCase
 
 
-def IsPositiveSemidefinite(A):
-	""" Input: A must be a numpy matrix.
-		Output: True if A is positive semidefinite, False otherwise.
-		Description: Checks to see if A is a positive semidefinite matrix
-					 by seeing if it's a symmetric matrix with positive
-					 eigenvalues.
-	"""
-
 def FindDistinguishedDirection(A, b):
 	""" Input: A must be a list of m (n x n)-dimensional numpy matrices and b
 			   b must be an (m x 1)-dimensional numpy matrix.
@@ -34,14 +26,11 @@ def FindDistinguishedDirection(A, b):
 	if (prob.status == 'infeasible'):
 		raise ValueError('Problem Is Infeasible')
 
-	if (prob.status == 'unbounded'):
-		raise ValueError('Problem Is Unbounded')
-
 	return x.value
 
 
 def EigenDecomp(E):
-	""" Input: (n x n)-dimensional numpy matrix E. E must be positive semidefinite.
+	""" Input: (n x n)-dimensional numpy matrix E.
 		Output: Orthogonal matrix Q of normed eigenvectors and diagonal matrix
 				of corresponding eigenvalues. Both given as (n x n)-dimensional
 				numpy matrices.
@@ -50,6 +39,7 @@ def EigenDecomp(E):
 
 	eig_values, eig_vectors = numpy.linalg.eig(E)
 	eig_values_matrix = numpy.diag(eig_values)
+
 	return [eig_vectors, eig_values_matrix]
 
 
@@ -81,7 +71,7 @@ def RenegarSDP(A, b, c, eps):
 	for i in range(0, len(A)):
 		new_A.append(E_root * A[i] * E_root)
 
-	opt_mod_sol, opt_mod_sol_val = IdentityCase.RenegarIdentitySDP(A, b, c, eps)
+	opt_mod_sol, opt_mod_sol_val = IdentityCase.RenegarIdentitySDP(new_A, b, new_c, eps)
 	opt_sol = E_root * opt_mod_sol * E_root
 
 	return [opt_sol, opt_mod_sol_val]
