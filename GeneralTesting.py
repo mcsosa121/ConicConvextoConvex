@@ -2,6 +2,7 @@ from GeneralCase import *
 import math
 import numpy
 import cvxpy
+import IdentityCase
 
 
 # isclose is used to check if two floating point numbers are close
@@ -93,7 +94,51 @@ print "Finished testing EigenDecomp"
 
 print "Testing RenegarSDP"
 
+# Example where identity matrix is a feasible solution - should return same
+# answer as RenegarIdentitySDP.
 
+A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [2, 6, 0], [8, 0, 4]])]
+c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
+b = numpy.matrix([[9], [10]])
+eps = 0.1
+
+gen_solution, gen_solution_value = RenegarSDP(A, b, c, eps)
+true_solution_value = 8.92
+
+if isclose(true_solution_value, gen_solution_value, 1e-1, 0.01):
+	print "RenegarIdentitySDP seems to get correct value"
+else:
+	raise ValueError("Value returned by RenegarIdentitySDP function is not what we expect to see.")
+
+eig_values, eig_vectors = numpy.linalg.eig(gen_solution)
+smallest_eigenvalue = round(numpy.amin(eig_values), 6)
+
+if isclose(numpy.trace(A[0].T * gen_solution), b[0], 1e-1, .01) and isclose(numpy.trace(A[1].T * gen_solution), b[1], 1e-1, .01) and check_symmetric(gen_solution) and smallest_eigenvalue >= 0:
+	print "RenegarSDP gets a feasible solution."
+else:
+	raise ValueError("Solution returned by RenegarSDP function violates constraints i.e. isn't feasible.")
+
+# Example where identity matrix is not a feasible solution.
+
+A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [2, 6, 0], [8, 0, 4]])]
+c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
+b = numpy.matrix([[6], [15]])
+eps = 0.1
+
+gen_solution, gen_solution_value = RenegarSDP(A, b, c, eps)
+true_solution_value = 9.7668
+
+if isclose(true_solution_value, gen_solution_value, 1e-1, 0.01):
+	print "RenegarIdentitySDP seems to get correct value"
+else:
+	raise ValueError("Value returned by RenegarIdentitySDP function is not what we expect to see.")
+
+eig_values, eig_vectors = numpy.linalg.eig(gen_solution)
+smallest_eigenvalue = round(numpy.amin(eig_values), 6)
+
+if isclose(numpy.trace(A[0].T * gen_solution), b[0], 1e-1, .01) and isclose(numpy.trace(A[1].T * gen_solution), b[1], 1e-1, .01) and check_symmetric(gen_solution) and smallest_eigenvalue >= 0:
+	print "RenegarSDP gets a feasible solution."
+else:
+	raise ValueError("Solution returned by RenegarSDP function violates constraints i.e. isn't feasible.")
 
 print "Finished testing RenegarSDP"
-
