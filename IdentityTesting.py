@@ -314,7 +314,7 @@ print "Finished testing AlgoMain"
 
 print "Testing RenegarIdentitySDP"
 
-# Test on sample problem whose solution we know from using CVX to solve in Matlab.
+# Test on sample problem whose solution we know from using cvxpy.
 A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [2, 6, 0], [8, 0, 4]])]
 c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
 b = numpy.matrix([[9], [10]])
