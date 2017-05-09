@@ -52,23 +52,8 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
             last_last_five_avg = sum(objective_values[-10:-5]) / 5
             close_enough = abs(last_five_avg - last_last_five_avg) / abs(last_last_five_avg + .1e-12) <= tol
 
-            # print last_last_five_avg
-            # print last_five_avg
-            # print abs(last_five_avg - last_last_five_avg) / abs(last_last_five_avg)
-
             if close_enough:
                 break
-
-
-        # Check how close successive residuals are.
-        # prev_value = numpy.trace(c.T * pi_k[i])
-        # current_value = numpy.trace(c.T * pi_k[i+1])
-        # relative_error = abs(prev_value - current_value) / abs(prev_value)
-        # relative_errors += [relative_error]
-        # close_enough = abs(relative_errors[i+1] - relative_errors[i]) / abs(relative_errors[i]) <= tol
-        # print relative_error
-        # close_enough = close_enough and (relative_error < 1e-2)
-
 
     if iteration_number == max_iterations:
         print "Warning: Maximum number of iterations reached. Problem may be unbounded or the chosen tolerance was too small."
@@ -77,77 +62,6 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
     opt_sol_val = numpy.trace(c.T * opt_sol)
 
     return [opt_sol, opt_sol_val]
-
-
-
-
-    #     # Check how close successive iterations are to one another.
-    #     prev_value = numpy.trace(c.T * pi_k[i])
-    #     current_value = numpy.trace(c.T * pi_k[i+1])
-    #     relative_error = abs(prev_value - current_value) / abs(prev_value)
-    #     relative_errors += [relative_error]
-    #     close_enough = abs(relative_errors[i+1] - relative_errors[i]) <= tol
-    #     #print abs(prev_value - current_value) / abs(prev_value)
-    #     #close_enough = abs(prev_value - current_value) / abs(prev_value) <= tol
-
-
-
-
-    # n = x.shape[0]
-
-    # # Initialize
-    # e = numpy.identity(n)
-    # x_0 = IdentityCase.ModToOrig(x)
-    # pi_0 = IdentityCase.ModToOrig(x)
-
-    # x_k = [x_0]
-    # pi_k = [pi_0]
-
-    # iteration_number = 0
-    # relative_errors = [0]
-
-    # # Iterate
-    # for i in range(0, max_iterations):
-    #     supgrad_k = IdentityCase.Supgradient(x_k[i])
-    #     project_supgrad_k = IdentityCase.SupgradProjection(supgrad_k, A, c)
-    #     x_tild = x_k[i] + (eps / 2) * (1 / numpy.linalg.norm(project_supgrad_k)) * project_supgrad_k
-    #     pi_k.append(IdentityCase.ModToOrig(x_tild))
-
-    #     if numpy.trace(c.T * (e - pi_k[i+1])) >= (4/3) * numpy.trace(c.T * (e - x_tild)):
-    #         x_k.append(pi_k[i+1])
-    #     else:
-    #         x_k.append(x_tild)
-
-    #     iteration_number +=1
-
-    #     # Check how close successive iterations are to one another.
-    #     prev_value = numpy.trace(c.T * pi_k[i])
-    #     current_value = numpy.trace(c.T * pi_k[i+1])
-    #     relative_error = abs(prev_value - current_value) / abs(prev_value)
-    #     relative_errors += [relative_error]
-    #     close_enough = abs(relative_errors[i+1] - relative_errors[i]) <= tol
-    #     #print abs(prev_value - current_value) / abs(prev_value)
-    #     #close_enough = abs(prev_value - current_value) / abs(prev_value) <= tol
-
-    #     # Commented out code below used to show that iterations begin to
-    #     # oscillate back and forth by the same amount after a long enough period of time.
-    #     # Tells us that we might want to look at changes in the relative error rather
-    #     # than changes in successive values.
-    #     #if prev_value <= current_value:
-    #     #    print "1"
-    #     #else:
-    #     #    print "0"
-
-    #     if close_enough:
-    #         break
-
-    # if iteration_number == max_iterations:
-    #     print "Warning: Maximum number of iterations reached. Problem may be unbounded or the chosen tolerance was too small."
-
-    # opt_sol = pi_k[iteration_number]
-    # opt_sol_val = numpy.trace(c.T * opt_sol)
-
-    # return [opt_sol, opt_sol_val]
 
 
 def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
@@ -175,7 +89,6 @@ def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
     opt_sol, opt_sol_val = AlgoMainWithTolerance(A, c, initial_guess, z, eps, tol, max_iterations)
 
     return [opt_sol, opt_sol_val]
-
 
 
 def RenegarSDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
