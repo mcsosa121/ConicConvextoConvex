@@ -26,7 +26,7 @@ b = numpy.matrix([[9], [10]])
 z = 15
 initial_guess = InitialFinder(A, b, c, z)
 eps = 0.1
-tol = 1e-8
+tol = 1e-3
 max_iterations = 1000
 
 # Used CVX in Matlab to find the value of the actual optimal solution.
@@ -60,7 +60,7 @@ A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [
 c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
 b = numpy.matrix([[9], [10]])
 eps = 0.1
-tol = 1e-6
+tol = 1e-3
 max_iterations = 1000
 
 solution, solution_value = RenegarIdentitySDPv2(A, b, c, eps, tol, max_iterations)
@@ -94,13 +94,14 @@ A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [
 c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
 b = numpy.matrix([[9], [10]])
 eps = 0.1
-tol = 1e-6
+tol = 1e-2
 max_iterations = 1000
 
 gen_solution, gen_solution_value = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
 true_solution_value = 8.92
+print gen_solution_value
 
-if isclose(true_solution_value, gen_solution_value, 1e-1, 0.01):
+if isclose(true_solution_value, gen_solution_value, 1e-2, 0.01):
 	print "RenegarIdentitySDPv2 seems to get correct value"
 else:
 	raise ValueError("Value returned by RenegarIdentitySDPv2 function is not what we expect to see.")
@@ -119,11 +120,12 @@ A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [
 c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
 b = numpy.matrix([[6], [15]])
 eps = 0.1
-tol = 1e-6
+tol = 1e-2
 max_iterations = 1000
 
 gen_solution, gen_solution_value = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
 true_solution_value = 9.7668
+print gen_solution_value
 
 if isclose(true_solution_value, gen_solution_value, 1e-1, 0.01):
 	print "RenegarIdentitySDPv2 seems to get correct value"
