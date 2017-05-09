@@ -140,31 +140,4 @@ if isclose(numpy.trace(A[0].T * gen_solution), b[0], 1e-1, .01) and isclose(nump
 else:
 	raise ValueError("Solution returned by RenegarSDPv2 function violates constraints i.e. isn't feasible.")
 
-# Example where identity matrix is not a feasible solution and problem is bounded.
-
-A = [numpy.matrix([[4.52063358, 3.11593607], [6.94114622, 8.81546487]]), numpy.matrix([[5.71720674, 0.00913052], [4.1388414, 0.94717985]])]
-c = numpy.matrix([[5.93433395, 2.21453672], [8.09226081, 5.3406412]])
-b = numpy.matrix([[4.37111761], [2.69379125]])
-eps = 0.1
-tol = 1e-3
-max_iterations = 1000
-
-gen_solution, gen_solution_value, iterations = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
-true_solution_value = 1.159965
-print gen_solution_value
-
-# Example where identity matrix is not feasible and problem is unbounded.
-
-
-# Example where problem is infeasible (problem generated using numpy.random.rand).
-# A = [numpy.matrix([[, , ], [, , ]]),
-#      numpy.matrix([[], []])]
-# c = numpy.matrix([[], []])
-# b = numpy.matrix([[], []])
-# eps = 0.1
-# tol = 1e-3
-# max_iterations = 1000
-
-# gen_solution, gen_solution_value, iterations = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
-
-# print "Finished testing RenegarSDPv2"
+print "Finished testing RenegarSDPv2"
