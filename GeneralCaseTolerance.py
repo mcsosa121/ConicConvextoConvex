@@ -46,10 +46,10 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
         # Check how close successive 5-term averages are.
         current_value = numpy.trace(c.T * pi_k[i+1])
         objective_values.append(current_value)
-        if ((i + 1) % 5) == 0:
+        if ((i + 1) % 10) == 0:
             obj_len = len(objective_values)
-            last_five_avg = sum(objective_values[-5:]) / 5
-            last_last_five_avg = sum(objective_values[-10:-5]) / 5
+            last_five_avg = sum(objective_values[-10:]) / 10
+            last_last_five_avg = sum(objective_values[-20:-10]) / 10
             close_enough = abs(last_five_avg - last_last_five_avg) / abs(last_last_five_avg + .1e-12) <= tol
 
             if close_enough:
@@ -61,10 +61,10 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
     opt_sol = pi_k[iteration_number]
     opt_sol_val = numpy.trace(c.T * opt_sol)
 
-    return [opt_sol, opt_sol_val]
+    return [opt_sol, opt_sol_val, iteration_number]
 
 
-def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
+def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000, z = None):
     """ Input: Same as RenegarIdentitySDPv2, except now we have tol and max_iterations,
                both of which must be numbers.
         Output: Same as RenegarIdentitySDP.
@@ -80,18 +80,22 @@ def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
     # Now, find a starting point for the supgradient algorithm.
     n = c.shape[0]
     e_value = numpy.trace(c.T * numpy.identity(n))
-    z = e_value - .9 * abs(e_value)
+
+    if z == None:
+        z = e_value - .9 * abs(e_value)
+    else:
+        z = z
     initial_guess = IdentityCase.InitialFinder(A, b, c, z)
 
     # Finally, run supgradient algorithm and return optimal solution along
     # with its value.
 
-    opt_sol, opt_sol_val = AlgoMainWithTolerance(A, c, initial_guess, z, eps, tol, max_iterations)
+    opt_sol, opt_sol_val, iteration_number = AlgoMainWithTolerance(A, c, initial_guess, z, eps, tol, max_iterations)
 
-    return [opt_sol, opt_sol_val]
+    return [opt_sol, opt_sol_val, iteration_number]
 
 
-def RenegarSDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
+def RenegarSDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000, z = None):
     """ Input: Same as RenegarSDP, except now we have tol and max_iterations,
                both of which must be numbers.
         Output: Same as RenegarSDP.
@@ -110,7 +114,7 @@ def RenegarSDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000):
     for i in range(0, len(A)):
         new_A.append(E_root * A[i] * E_root)
 
-    opt_mod_sol, opt_mod_sol_val = RenegarIdentitySDPv2(new_A, b, new_c, eps, tol, max_iterations)
+    opt_mod_sol, opt_mod_sol_val, iteration_number = RenegarIdentitySDPv2(new_A, b, new_c, eps, tol, max_iterations, z)
     opt_sol = E_root * opt_mod_sol * E_root
 
-    return [opt_sol, opt_mod_sol_val]
+    return [opt_sol, opt_mod_sol_val, iteration_number]
