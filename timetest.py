@@ -28,7 +28,8 @@ eps = 0.1
 optz = None
 opttime = None
 time = 0
-for i in numpy.linspace(0.01,1,100):
+for i in numpy.linspace(-1,1,200):
+    i = i * numpy.trace(c)
     start = timeit.default_timer()
     solution, solution_value = RenegarIdentitySDP(A,b,c,eps,i)
     stop = timeit.default_timer()
