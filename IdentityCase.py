@@ -231,7 +231,7 @@ def AlgoMain(A, c, x, z, eps):
     return [opt_sol, opt_sol_val]
 
 
-def RenegarIdentitySDP(A, b, c, eps):
+def RenegarIdentitySDP(A, b, c, eps, z=None):
     """ Input: A must be a list of (n x n)-dimensional numpy matrices that
                correspond to the affine constraints in the original problem CP
                (see page 3), and c must be an (n x n)-dimensional numpy matrix
@@ -258,7 +258,10 @@ def RenegarIdentitySDP(A, b, c, eps):
     # Now, find a starting point for the supgradient algorithm.
     n = c.shape[0]
     e_value = numpy.trace(c.T * numpy.identity(n))
-    z = e_value - .9 * abs(e_value)
+    if z is None:
+        z = e_value - .9 * abs(e_value)
+    else:
+        z = z
     initial_guess = InitialFinder(A, b, c, z)
 
     # Finally, run supgradient algorithm and return optimal solution along
