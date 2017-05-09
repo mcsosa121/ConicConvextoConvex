@@ -14,7 +14,7 @@ def Checker(A, b, c, epsilon):
         (with m >= 1), b be an (m x 1)-dimensional numpy matrix, c be an (n x n)-dimensional
         numpy matrix, and epsilon be a number between 0 and 1 (not inclusive).
     """
-    
+
     if (not isinstance(epsilon, float)) or (epsilon >= 1) or (epsilon <= 0):
         raise ValueError('epsilon must be a number between 0 and 1 (not inclusive).')
 
@@ -46,7 +46,7 @@ def Checker(A, b, c, epsilon):
 
 
 def IsIdentitySolution(A, b):
-    """ Input: A is a list of m (n x n)-dimensional numpy matrices, and b is 
+    """ Input: A is a list of m (n x n)-dimensional numpy matrices, and b is
                an (m x 1)-dimensional numpy matrix.
         Output: True or False
         Description: IsIdentitySolution returns True if the (n x n)-dimensional
@@ -76,7 +76,7 @@ def InitialFinder(A, b, c, z):
         Description: We use cvxpy to find a starting point for the supgradient algorithm
                      (see page 14 of paper).
     """
-    
+
     n = c.shape[0]
     x = cvxpy.Variable(n, n)
     objective = cvxpy.Minimize(0)
@@ -85,7 +85,7 @@ def InitialFinder(A, b, c, z):
         constraints += [cvxpy.trace(A[i].T * x) == b[i]]
     prob = cvxpy.Problem(objective, constraints)
     result = prob.solve()
-    
+
     if (prob.status == 'infeasible'):
         raise ValueError('Problem Is Infeasible')
 
@@ -103,14 +103,14 @@ def Supgradient(x):
                      See page 5 of the paper for specifics. This function assumes that the
                      distinguished direction e is the identity matrix.
     """
-    
+
     eig_values, eig_vectors = numpy.linalg.eig(x)
     sort_permutations = eig_values.argsort()
-    
+
     # Sort eigenvalues and re-arrange eigenvectors to match up with eigenvalues.
     eig_values.sort()
     eig_vectors = eig_vectors[:, sort_permutations]
-    
+
     v = eig_vectors[:, 0]
     return v * numpy.transpose(v)
 
@@ -167,7 +167,7 @@ def ModToOrig(x):
                 distinguished direction used is the identity matrix.
         Description: ModToOrig maps the point x to the boundary of the feasible
                      region of the original problem. It corresponds to pi(x) in
-                     the paper (see page 3). 
+                     the paper (see page 3).
     """
 
     n = x.shape[0]
