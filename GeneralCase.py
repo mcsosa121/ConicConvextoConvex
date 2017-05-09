@@ -40,7 +40,7 @@ def EigenDecomp(E):
 	eig_values, eig_vectors = numpy.linalg.eig(E)
 	eig_values_matrix = numpy.diag(eig_values)
 
-	return [eig_vectors, eig_values_matrix]
+	return [eig_vectors, numpy.around(eig_values_matrix, 9)]
 
 
 def RenegarSDP(A, b, c, eps):
