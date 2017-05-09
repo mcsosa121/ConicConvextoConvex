@@ -32,7 +32,7 @@ max_iterations = 1000
 # Used CVX in Matlab to find the value of the actual optimal solution.
 true_solution_value = 8.92
 
-AlgoMainSol, AlgoMainSolVal = AlgoMainWithTolerance(A, c, initial_guess, z, eps, tol, max_iterations)
+AlgoMainSol, AlgoMainSolVal, iterations = AlgoMainWithTolerance(A, c, initial_guess, z, eps, tol, max_iterations)
 
 if isclose(true_solution_value, AlgoMainSolVal, 1e-1, 0.1):
 	print "AlgoMainWithTolerance seems to get correct value"
@@ -63,7 +63,7 @@ eps = 0.1
 tol = 1e-3
 max_iterations = 1000
 
-solution, solution_value = RenegarIdentitySDPv2(A, b, c, eps, tol, max_iterations)
+solution, solution_value, iterations = RenegarIdentitySDPv2(A, b, c, eps, tol, max_iterations)
 true_solution_value = 8.92
 
 if isclose(true_solution_value, solution_value, 1e-1, 0.01):
@@ -97,7 +97,7 @@ eps = 0.1
 tol = 1e-2
 max_iterations = 1000
 
-gen_solution, gen_solution_value = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
+gen_solution, gen_solution_value, iterations = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
 true_solution_value = 8.92
 print gen_solution_value
 
@@ -114,16 +114,16 @@ if isclose(numpy.trace(A[0].T * gen_solution), b[0], 1e-1, .01) and isclose(nump
 else:
 	raise ValueError("Solution returned by RenegarSDPv2 function violates constraints i.e. isn't feasible.")
 
-# Example where identity matrix is not a feasible solution.
+# Example where identity matrix is not a feasible solution and problem is bounded.
 
 A = [numpy.matrix([[1, 0, 1], [0, 3, 7], [1, 7, 5]]), numpy.matrix([[0, 2, 8], [2, 6, 0], [8, 0, 4]])]
 c = numpy.matrix([[1, 2, 3], [2, 9, 0], [3, 0, 7]])
 b = numpy.matrix([[6], [15]])
 eps = 0.1
-tol = 1e-2
+tol = 1e-3
 max_iterations = 1000
 
-gen_solution, gen_solution_value = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
+gen_solution, gen_solution_value, iterations = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
 true_solution_value = 9.7668
 print gen_solution_value
 
@@ -140,4 +140,31 @@ if isclose(numpy.trace(A[0].T * gen_solution), b[0], 1e-1, .01) and isclose(nump
 else:
 	raise ValueError("Solution returned by RenegarSDPv2 function violates constraints i.e. isn't feasible.")
 
-print "Finished testing RenegarSDPv2"
+# Example where identity matrix is not a feasible solution and problem is bounded.
+
+A = [numpy.matrix([[4.52063358, 3.11593607], [6.94114622, 8.81546487]]), numpy.matrix([[5.71720674, 0.00913052], [4.1388414, 0.94717985]])]
+c = numpy.matrix([[5.93433395, 2.21453672], [8.09226081, 5.3406412]])
+b = numpy.matrix([[4.37111761], [2.69379125]])
+eps = 0.1
+tol = 1e-3
+max_iterations = 1000
+
+gen_solution, gen_solution_value, iterations = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
+true_solution_value = 1.159965
+print gen_solution_value
+
+# Example where identity matrix is not feasible and problem is unbounded.
+
+
+# Example where problem is infeasible (problem generated using numpy.random.rand).
+# A = [numpy.matrix([[, , ], [, , ]]),
+#      numpy.matrix([[], []])]
+# c = numpy.matrix([[], []])
+# b = numpy.matrix([[], []])
+# eps = 0.1
+# tol = 1e-3
+# max_iterations = 1000
+
+# gen_solution, gen_solution_value, iterations = RenegarSDPv2(A, b, c, eps, tol, max_iterations)
+
+# print "Finished testing RenegarSDPv2"
