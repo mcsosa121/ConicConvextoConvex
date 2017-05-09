@@ -15,8 +15,8 @@ def FindDistinguishedDirection(A, b):
 	"""
 
 	n = A[0].shape[0]
-	x = cvxpy.Variable(n, n)
-	constraints = [x >> 0, x.T == x]
+	x = cvxpy.Semidef(n)
+	constraints = []
 	for i in range(0, len(A)):
 		constraints += [cvxpy.trace(A[i].T * x) == b[i]]
 	objective = cvxpy.Minimize(0)
