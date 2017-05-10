@@ -15,7 +15,7 @@ def check_symmetric(a, tol = 1e-6):
 
 ################################################################################
 ################################ Test Checker ##################################
- 
+
 print "Testing Checker"
 
 # Example where epsilon is not a float
@@ -200,7 +200,7 @@ c = numpy.matrix([[1, 0], [0, 1]])
 
 x = InitialFinder(A, b, c, 1.5)
 
-# Make sure that x is symmetric, satisfies the affine constraint, 
+# Make sure that x is symmetric, satisfies the affine constraint,
 # and has objective function value equal to 1.5.
 
 if isclose(numpy.trace(A[0].T * x), b.item(0, 0), 1e-6, 0.01) and isclose(numpy.trace(c.T * x), 1.5, 1e-6, 0.01) and check_symmetric(x):
@@ -253,7 +253,7 @@ print "Finished testing Supgradient"
 
 print "Testing SupgradProjection"
 
-# Testing for specific instance of problem.  
+# Testing for specific instance of problem.
 A = [numpy.matrix([[1, 1, 0], [1, -1, -1], [0, -1, 0]]), numpy.matrix([[1, 2, 0], [2, 1, 2], [0, -3, 1]])]
 c = numpy.matrix([[0, 1, 1], [1, 0, 1], [1, 1, 0]])
 supgradient = numpy.matrix([[.25, 1/(2*math.sqrt(2)), .25], [1/(2*math.sqrt(2)), .5, 1/(2*math.sqrt(2))], [.25, 1/(2*math.sqrt(2)), .25]])
