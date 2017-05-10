@@ -63,7 +63,8 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
                 break
 
     if iteration_number == max_iterations:
-        print "Warning: Maximum number of iterations reached. Problem may be unbounded or the chosen tolerance was too small."
+        print "Warning: Maximum number of iterations reached. Problems may be \n1. SDP is Unbounded \n2. Chosen tolerance too small \n3. The algorithm is converging too slowly"
+        print "You may want to consider raising the maximum number of iterations or changing the tolerance."
 
     #opt_sol = pi_k[iteration_number]
     #opt_sol_val = numpy.trace(c.T * opt_sol)
@@ -98,12 +99,15 @@ def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000, z = No
     # Finally, run supgradient algorithm and return optimal solution along
     # with its value.
 
-    opt_sol, opt_sol_val, iteration_number = AlgoMainWithTolerance(A, c, initial_guess, z, eps, tol, max_iterations)
+    opt_sol, opt_sol_val, iteration_number = AlgoMainWithTolerance(
+        A, c, initial_guess,
+        z, eps, tol, max_iterations
+    )
 
     return [opt_sol, opt_sol_val, iteration_number]
 
 
-def RenegarSDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000, z = None):
+def RenegarSDPv2(A, b, c, eps, tol=1e-6, max_iterations=1000, z=None):
     """ Input: Same as RenegarSDP, except now we have tol and max_iterations,
                both of which must be numbers.
         Output: Same as RenegarSDP.
