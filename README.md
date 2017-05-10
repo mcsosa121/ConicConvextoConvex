@@ -1,12 +1,13 @@
-#The Undergradpad
+# The Undergradpad
 Implementing master of Optimization and Cornell Professor Jim Renegar's frameworks for applying Subgradient Method to Conic Optimization problems. 
-Read the paper [here].
-#The Team
+Read Renegars original paper [here].
+Read our [final report].
+# The Team
 * Zach Rosenof : (zer2)
 * Mitch Perry : (mop25)
 * [Mike Sosa] : (mcs348)
 
-#Code Overview
+# Code Overview
 1. GeneralCase
 	* FindDistinguisedDirection - Use cvxpy to find a feasible solution to the SDP specified by A and b.
 	    * Inputs :
@@ -14,12 +15,6 @@ Read the paper [here].
 	        2. b : numpy matrix - Mx1 matrix
 	   * Output :
 	        1. e : numpy matrix - A NxN matrix that can serve as a distinguished direction to the problem
-	* EigenDecomp - Returns Eigenvalue Decomposition of a matrix E
-	   * Inputs :
-	        1. E : numpy matrix - A NxN matrix
-	   * Output :
-	        1. Q : numpy matrix - A NxN orthogonal matrix containing the normed eigenvectors of E
-	        2. Lambda : numpy matrix - A NxN diagonal matrix containing the eigenvalues of E
 	* RenegarSDP - Uses the algorithm described in Renegar's paper to solve the following SDP: minimize <c, x> subject to Ax=                     b and x is in the cone of positive semidefinite matrices.
 	   * Inputs :
 	        1. A : list of numpy matrices - A list of m finite dimensional NxN matrices  
@@ -83,3 +78,4 @@ Read the paper [here].
 [//]: #
 [here]: <https://arxiv.org/pdf/1503.02611.pdf>
 [Mike Sosa]: <http://www.github.com/mcsosa121>
+[final report]:  undergradpad/reports/6326FinalReport.pdf
