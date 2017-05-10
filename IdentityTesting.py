@@ -129,8 +129,8 @@ except:
 	print "Checked that dimension of matrices in A must have same dimension as c"
 
 # Example where everything works out
-A = [numpy.matrix([[1, 2], [3, 4]]), numpy.matrix([[1, 2], [3, 4]])]
-c = numpy.matrix([[1, 2], [3, 4]])
+A = [numpy.matrix([[1, 2], [2, 1]]), numpy.matrix([[1, 2], [2, 1]])]
+c = numpy.matrix([[1, 2], [2, 1]])
 b = numpy.matrix([[1], [2]])
 eps = 0.5
 
