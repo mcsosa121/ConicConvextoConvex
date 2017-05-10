@@ -28,6 +28,8 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
 
     iteration_number = 0
     objective_values = []
+    current_best_solution = x_0
+    current_best_value = numpy.trace(c.T * x_0)
 
     # Iterate
     for i in range(0, max_iterations):
@@ -47,6 +49,10 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
         current_value = numpy.trace(c.T * pi_k[i+1])
         objective_values.append(current_value)
 
+        if current_value < current_best_value:
+            current_best_value = current_value
+            current_best_solution = pi_k[i+1]
+
         if ((i + 1) % 10) == 0:
             obj_len = len(objective_values)
             last_five_avg = sum(objective_values[-10:]) / 10
@@ -59,10 +65,11 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
     if iteration_number == max_iterations:
         print "Warning: Maximum number of iterations reached. Problem may be unbounded or the chosen tolerance was too small."
 
-    opt_sol = pi_k[iteration_number]
-    opt_sol_val = numpy.trace(c.T * opt_sol)
+    #opt_sol = pi_k[iteration_number]
+    #opt_sol_val = numpy.trace(c.T * opt_sol)
 
-    return [opt_sol, opt_sol_val, iteration_number]
+    #return [opt_sol, opt_sol_val, iteration_number]
+    return [current_best_solution, current_best_value, iteration_number]
 
 
 def RenegarIdentitySDPv2(A, b, c, eps, tol = 1e-6, max_iterations = 1000, z = None):
