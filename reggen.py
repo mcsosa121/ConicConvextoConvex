@@ -13,17 +13,13 @@ def createRandGenSDP(m, n):
       matrices to have
     """
     A = []
-    print "---------Creating A---------"
     for i in range(m):
         a = numpy.matrix(np.random.rand(n, n))
         a = a.T * a
         A.append(a)
-    print "---------Creating C---------"
     c = numpy.matrix(np.random.rand(n, n))
     c = c.T * c
-    print "---------Creating b---------"
     b = np.matrix(np.random.rand(m, 1))
-    print "-------- Checking  ---------"
     return [A, b, c]
 
 
