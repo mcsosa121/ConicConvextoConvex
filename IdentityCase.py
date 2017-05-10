@@ -7,6 +7,10 @@ import math
 def isclose(a, b, rel_tol, abs_tol):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
+# check_symmetric checks to see if the numpy matrix a is symmetric.
+def check_symmetric(a, tol = 1e-6):
+    return numpy.allclose(a, a.T, atol = tol)
+
 
 def Checker(A, b, c, epsilon):
     """ Checks to see if the user-defined input is of the correct form.
@@ -18,8 +22,8 @@ def Checker(A, b, c, epsilon):
     if (not isinstance(epsilon, float)) or (epsilon >= 1) or (epsilon <= 0):
         raise ValueError('epsilon must be a number between 0 and 1 (not inclusive).')
 
-    if (not isinstance(c, numpy.matrix)) or (c.shape[0] != c.shape[1]):
-        raise ValueError('c must be a square numpy matrix.')
+    if (not isinstance(c, numpy.matrix)) or (c.shape[0] != c.shape[1]) or (not check_symmetric(c)):
+        raise ValueError('c must be a symmetric numpy matrix.')
 
     if (not isinstance(b, numpy.matrix)) or (b.shape[1] != 1):
         raise ValueError('b must be an (m x 1)-dimensional numpy matrix.')
@@ -28,8 +32,8 @@ def Checker(A, b, c, epsilon):
         raise ValueError('A must be a list that includes at least one constraint.')
 
     for i in range(0, len(A)):
-        if (not isinstance(A[i], numpy.matrix)) or (A[i].shape[0] != A[i].shape[1]):
-            raise ValueError('Each element of A must be a square numpy matrix.')
+        if (not isinstance(A[i], numpy.matrix)) or (A[i].shape[0] != A[i].shape[1]) or (not check_symmetric(A[i])):
+            raise ValueError('Each element of A must be a symmetric numpy matrix.')
 
     # Now we go through and make sure dimensions all match.
     n = c.shape[0]
