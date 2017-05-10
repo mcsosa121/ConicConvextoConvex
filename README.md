@@ -78,4 +78,4 @@ Read our [final report].
 [//]: #
 [here]: <https://arxiv.org/pdf/1503.02611.pdf>
 [Mike Sosa]: <http://www.github.com/mcsosa121>
-[final report]:  undergradpad/reports/6326FinalReport.pdf
+[final report]: reports/6326FinalReport.pdf
