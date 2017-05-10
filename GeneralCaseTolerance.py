@@ -46,6 +46,7 @@ def AlgoMainWithTolerance(A, c, x, z, eps, tol = 1e-6, max_iterations=1000):
         # Check how close successive 5-term averages are.
         current_value = numpy.trace(c.T * pi_k[i+1])
         objective_values.append(current_value)
+
         if ((i + 1) % 10) == 0:
             obj_len = len(objective_values)
             last_five_avg = sum(objective_values[-10:]) / 10
