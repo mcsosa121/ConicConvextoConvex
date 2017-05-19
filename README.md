@@ -3,9 +3,9 @@ Implementing master of Optimization and Cornell Professor Jim Renegar's framewor
 Read Renegars original paper [here].
 Read our [final report].
 # The Team
-* Zach Rosenof : (zer2)
-* Mitch Perry : (mop25)
-* [Mike Sosa] : (mcs348)
+* Zach Rosenof 
+* Mitch Perry 
+* Mike Sosa 
 
 # Code Overview
 1. GeneralCase
